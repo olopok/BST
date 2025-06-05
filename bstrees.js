@@ -39,7 +39,71 @@ export class Tree {
     root.right = this.buildTree(array, mid + 1, end);
     return root;
   }
-    
+
+  insert(value) {
+    const newNode = new Node(value);
+
+    if (this.root === null) {
+      this.root = newNode;
+      return;
+    }
+
+    let current = this.root;
+    while (true) {
+      if (value < current.data) {
+        if (current.left === null) {
+          current.left = newNode;
+          return;
+        }
+        current = current.left;
+      } else if (value > current.data) {
+        if (current.right === null) {
+          current.right = newNode;
+          return;
+        }
+        current = current.right;
+      } else {
+        // Value already exists
+        return;
+      }
+    }
+  }
+
+  delete(value, root = this.root) {
+    if (root === null) return root;
+
+    if (value < root.data) {
+      root.left = this.delete(value, root.left);
+      return root;
+    } else if (value > root.data) {
+      root.right = this.delete(value, root.right);
+      return root;
+    } else {
+      if (root.left === null) return root.right;
+      if (root.right === null) return root.left;
+
+      let succ = root.right;
+      while (succ.left !== null) {
+        succ = succ.left;
+      }
+      root.data = succ.data;
+      root.right = this.delete(succ.data, root.right);
+      return root;
+    }
+  }
+
+  find(value, root = this.root) {
+    if (root === null) return null;
+
+    if (value === root.data) return root;
+
+    if (value < root.data) {
+      return this.find(value, root.left);
+    } else {
+      return this.find(value, root.right);
+    }
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
