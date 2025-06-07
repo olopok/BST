@@ -106,25 +106,37 @@ export class Tree {
 
   levelOrderRecursion(callback) {
     if (typeof callback !== "function") {
-      throw new Error("A function is required");
+        throw new Error("A function is required");
     }
 
     if (!this.root) return [];
 
-    const queue = [[this.root, 0]]; // Store [node, level]
+    // Helper function to get tree height
+    const getHeight = (node) => {
+        if (node === null) return 0;
+        const leftHeight = getHeight(node.left);
+        const rightHeight = getHeight(node.right);
+        return Math.max(leftHeight, rightHeight) + 1;
+    };
 
-    while (queue.length > 0) {
-      const [currentNode, level] = queue.shift();
-      callback(currentNode.data, level);
+    // Helper function to process nodes at a specific level
+    const processCurrentLevel = (node, level, currentLevel = 0) => {
+        if (node === null) return;
 
-      if (currentNode.left) {
-        queue.push([currentNode.left, level + 1]);
-      }
-      if (currentNode.right) {
-        queue.push([currentNode.right, level + 1]);
-      }
+        if (level === currentLevel) {
+            callback(node.data, level);
+        } else {
+            processCurrentLevel(node.left, level, currentLevel + 1);
+            processCurrentLevel(node.right, level, currentLevel + 1);
+        }
+    };
+
+    // Process each level
+    const height = getHeight(this.root);
+    for (let level = 0; level < height; level++) {
+        processCurrentLevel(this.root, level);
     }
-  }
+}
   
   levelOrderIteration(callback) {
     if (typeof callback !== "function") {

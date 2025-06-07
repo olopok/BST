@@ -37,5 +37,5 @@ tree.levelOrderRecursion(processNodeRecursive);
 tree.levelOrderIteration(processNodeIterative);
 
 // Log results separately
-console.log("Levels with recursion:", levelsRecursive);
-console.log("Levels with iteration:", levelsIterative);
+console.log("Levels with recursion:\n", levelsRecursive);
+console.log("Levels with iteration:\n", levelsIterative);
