@@ -104,6 +104,47 @@ export class Tree {
     }
   }
 
+  levelOrderRecursion(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A function is required");
+    }
+
+    if (!this.root) return [];
+
+    const queue = [[this.root, 0]]; // Store [node, level]
+
+    while (queue.length > 0) {
+      const [currentNode, level] = queue.shift();
+      callback(currentNode.data, level);
+
+      if (currentNode.left) {
+        queue.push([currentNode.left, level + 1]);
+      }
+      if (currentNode.right) {
+        queue.push([currentNode.right, level + 1]);
+      }
+    }
+  }
+  
+  levelOrderIteration(callback) {
+    if (typeof callback !== "function") {
+        throw new Error("A function is required");
+    }
+
+    const queue = [[this.root, 0]];  // Store [node, level] pairs
+    const result = [];
+    
+    if (this.root === null) return result;
+    
+    while (queue.length > 0) {
+        const [node, level] = queue.shift();
+        callback(node.data, level);  // Pass both value and level to callback
+        
+        if (node.left) queue.push([node.left, level + 1]);
+        if (node.right) queue.push([node.right, level + 1]);
+    }
+}
+  
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
