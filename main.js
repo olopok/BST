@@ -6,6 +6,10 @@ tree.insert(68);
 tree.insert(54);
 tree.insert(2);
 tree.insert(99);
+tree.insert(101);
+tree.insert(105);
+tree.insert(110);
+tree.insert(120);
 tree.delete(67);
 console.log(tree.find(80));
 tree.prettyPrint();
@@ -15,7 +19,7 @@ const levelsRecursive = [];
 const levelsIterative = [];
 const inOrder = [];
 const postOrder = [];
-const preOrder=[]
+const preOrder = [];
 
 // Callback for recursive traversal
 const processNodeRecursive = (value, level) => {
@@ -51,3 +55,16 @@ console.log("Post Order:", postOrder);
 
 tree.preOrder((x) => preOrder.push(x));
 console.log("Pre Order:", preOrder);
+
+const height = tree.height(99);
+console.log('Height:', height);
+
+const depth = tree.depth(98);
+console.log('Depth:', depth);
+
+console.log('Is balanced?:', tree.isBalance())
+
+tree.rebalance()
+tree.prettyPrint();
+console.log('Is balanced the new BST?:', tree.isBalance())
+

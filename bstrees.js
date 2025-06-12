@@ -188,6 +188,7 @@ export class Tree {
 
     traverse(this.root);
   }
+
   preOrder(callback) {
     if (typeof callback !== "function") {
       throw new Error("A function is required");
@@ -202,6 +203,68 @@ export class Tree {
     };
 
     traverse(this.root);
+  }
+
+  height(value) {
+    const node = this.find(value);
+    if (!node) return null;
+
+    const getHeight = (n) => {
+      if (n === null) return -1;
+      return 1 + Math.max(getHeight(n.left), getHeight(n.right));
+    };
+
+    return getHeight(node);
+  }
+
+  depth(value, node = this.root, level = 0) {
+    if (node === null) return null;
+
+    if (node.data === value) return level;
+
+    if (value < node.data) {
+      return this.depth(value, node.left, level + 1);
+    } else {
+      return this.depth(value, node.right, level + 1);
+    }
+  }
+
+  isBalance(node = this.root) {
+    // Helper function to get height and check balance
+    const getNodeHeight = (node) => {
+      if (node === null) return 0;
+
+      const leftHeight = getNodeHeight(node.left);
+      const rightHeight = getNodeHeight(node.right);
+
+      // Return -1 to indicate unbalanced subtree
+      if (
+        leftHeight === -1 ||
+        rightHeight === -1 ||
+        Math.abs(leftHeight - rightHeight) > 1
+      ) {
+        return -1;
+      }
+
+      return Math.max(leftHeight, rightHeight) + 1;
+    };
+
+    // Convert height result to boolean
+    return getNodeHeight(node) !== -1;
+  }
+  rebalance(node = this.root) {
+    // Collect all values from the tree using in-order traversal
+    const collectValues = (n, arr = []) => {
+      if (n === null) return arr;
+      collectValues(n.left, arr);
+      arr.push(n.data);
+      collectValues(n.right, arr);
+      return arr;
+    };
+    const newArray = collectValues(node);
+    const newArraySorted = this.sortingArray(newArray);
+    this.root = this.buildTree(newArraySorted, 0, newArraySorted.length - 1); 
+    console.log(newArraySorted);
   }
 
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
