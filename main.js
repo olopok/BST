@@ -13,6 +13,9 @@ tree.prettyPrint();
 // Create separate arrays for each traversal method
 const levelsRecursive = [];
 const levelsIterative = [];
+const inOrder = [];
+const postOrder = [];
+const preOrder=[]
 
 // Callback for recursive traversal
 const processNodeRecursive = (value, level) => {
@@ -39,3 +42,12 @@ tree.levelOrderIteration(processNodeIterative);
 // Log results separately
 console.log("Levels with recursion:\n", levelsRecursive);
 console.log("Levels with iteration:\n", levelsIterative);
+
+tree.inOrder((x) => inOrder.push(x));
+console.log("In Order:", inOrder);
+
+tree.postOrder((x) => postOrder.push(x));
+console.log("Post Order:", postOrder);
+
+tree.preOrder((x) => preOrder.push(x));
+console.log("Pre Order:", preOrder);

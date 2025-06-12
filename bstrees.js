@@ -106,57 +106,104 @@ export class Tree {
 
   levelOrderRecursion(callback) {
     if (typeof callback !== "function") {
-        throw new Error("A function is required");
+      throw new Error("A function is required");
     }
 
     if (!this.root) return [];
 
     // Helper function to get tree height
     const getHeight = (node) => {
-        if (node === null) return 0;
-        const leftHeight = getHeight(node.left);
-        const rightHeight = getHeight(node.right);
-        return Math.max(leftHeight, rightHeight) + 1;
+      if (node === null) return 0;
+      const leftHeight = getHeight(node.left);
+      const rightHeight = getHeight(node.right);
+      return Math.max(leftHeight, rightHeight) + 1;
     };
 
     // Helper function to process nodes at a specific level
     const processCurrentLevel = (node, level, currentLevel = 0) => {
-        if (node === null) return;
+      if (node === null) return;
 
-        if (level === currentLevel) {
-            callback(node.data, level);
-        } else {
-            processCurrentLevel(node.left, level, currentLevel + 1);
-            processCurrentLevel(node.right, level, currentLevel + 1);
-        }
+      if (level === currentLevel) {
+        callback(node.data, level);
+      } else {
+        processCurrentLevel(node.left, level, currentLevel + 1);
+        processCurrentLevel(node.right, level, currentLevel + 1);
+      }
     };
 
     // Process each level
     const height = getHeight(this.root);
     for (let level = 0; level < height; level++) {
-        processCurrentLevel(this.root, level);
+      processCurrentLevel(this.root, level);
     }
-}
-  
+  }
+
   levelOrderIteration(callback) {
     if (typeof callback !== "function") {
-        throw new Error("A function is required");
+      throw new Error("A function is required");
     }
 
-    const queue = [[this.root, 0]];  // Store [node, level] pairs
+    const queue = [[this.root, 0]]; // Store [node, level] pairs
     const result = [];
-    
+
     if (this.root === null) return result;
-    
+
     while (queue.length > 0) {
-        const [node, level] = queue.shift();
-        callback(node.data, level);  // Pass both value and level to callback
-        
-        if (node.left) queue.push([node.left, level + 1]);
-        if (node.right) queue.push([node.right, level + 1]);
+      const [node, level] = queue.shift();
+      callback(node.data, level); // Pass both value and level to callback
+
+      if (node.left) queue.push([node.left, level + 1]);
+      if (node.right) queue.push([node.right, level + 1]);
     }
-}
-  
+  }
+
+  inOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A function is required");
+    }
+
+    // Helper function to do the recursive traversal
+    const traverse = (node) => {
+      if (node === null) return;
+      traverse(node.left);
+      callback(node.data);
+      traverse(node.right);
+    };
+
+    traverse(this.root);
+  }
+
+  postOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A function is required");
+    }
+
+    // Helper function to do the recursive traversal
+    const traverse = (node) => {
+      if (node === null) return;
+      traverse(node.left);
+      traverse(node.right);
+      callback(node.data);
+    };
+
+    traverse(this.root);
+  }
+  preOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("A function is required");
+    }
+
+    // Helper function to do the recursive traversal
+    const traverse = (node) => {
+      if (node === null) return;
+      callback(node.data);
+      traverse(node.left);
+      traverse(node.right);
+    };
+
+    traverse(this.root);
+  }
+
   prettyPrint(node = this.root, prefix = "", isLeft = true) {
     if (node === null) {
       return;
