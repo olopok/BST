@@ -252,18 +252,12 @@ export class Tree {
     // Convert height result to boolean
     return getNodeHeight(node) !== -1;
   }
+  
   rebalance(node = this.root) {
-    // Collect all values from the tree using in-order traversal
-    const collectValues = (n, arr = []) => {
-      if (n === null) return arr;
-      collectValues(n.left, arr);
-      arr.push(n.data);
-      collectValues(n.right, arr);
-      return arr;
-    };
-    const newArray = collectValues(node);
+    const newArray = [];
+    this.inOrder((x) => newArray.push(x));
     const newArraySorted = this.sortingArray(newArray);
-    this.root = this.buildTree(newArraySorted, 0, newArraySorted.length - 1); 
+    this.root = this.buildTree(newArraySorted, 0, newArraySorted.length - 1);
     console.log(newArraySorted);
   }
 
